@@ -1,0 +1,40 @@
+# =====================================================================
+# WALKIN - Apache / LiteSpeed .htaccess for Hostinger Shared Hosting
+# Protects private storage, handles CORS, and configures PHP limits
+# =====================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Block direct web access to sensitive directories and config files
+    RewriteRule ^storage/ - [F,L]
+    RewriteRule ^config/ - [F,L]
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^composer\.(json|lock) - [F,L]
+    RewriteRule ^schema\.sql - [F,L]
+
+    # Route API endpoints if file does not exist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^api/(.*)$ api/$1.php [L,QSA]
+</IfModule>
+
+# Prevent directory listings
+Options -Indexes
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# PHP Execution Directives (for PHP 8.3+)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 12M
+    php_value max_execution_time 60
+    php_value memory_limit 128M
+</IfModule>

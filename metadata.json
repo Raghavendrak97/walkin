@@ -1,0 +1,6 @@
+{
+  "name": "WALKIN - Walk-in Recruitment Platform",
+  "description": "Dedicated walk-in recruitment platform connecting candidates directly with employers. Features dual walk-in modes, screening questions, multi-resume management, interview scheduling, and export tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
